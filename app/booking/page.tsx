@@ -15,6 +15,7 @@ export default function Booking() {
   const [step, setStep] = useState(0);
   const [done, setDone] = useState("");
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -27,7 +28,7 @@ export default function Booking() {
   const update = (field: string, value: string) =>
     setData((current) => ({ ...current, [field]: value }));
 
-  function submit(e: FormEvent<HTMLFormElement>) {
+  async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
 
@@ -44,17 +45,39 @@ export default function Booking() {
       return;
     }
 
+    setSubmitting(true);
+
     try {
+      let reference = crypto.randomUUID();
+
+      try {
+        const res = await fetch("/api/inquiries", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.reference) {
+            reference = json.reference;
+          }
+        }
+      } catch (apiErr) {
+        console.warn("API submission warning, saving locally:", apiErr);
+      }
+
       const item: Inquiry = {
         ...data,
-        id: crypto.randomUUID(),
+        id: reference,
         status: "New",
         created: new Date().toISOString()
       };
       saveInquiries([item, ...readInquiries()]);
-      setDone(item.id);
+      setDone(reference);
     } catch {
       setError("Unable to submit inquiry at this time. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -226,8 +249,8 @@ export default function Booking() {
                 ) : (
                   <span />
                 )}
-                <button className={s.primary} type="submit" disabled={!ready}>
-                  {step === 2 ? "Send inquiry" : "Continue"}
+                <button className={s.primary} type="submit" disabled={!ready || submitting}>
+                  {submitting ? "Sending inquiry..." : step === 2 ? "Send inquiry" : "Continue"}
                 </button>
               </div>
             </form>
