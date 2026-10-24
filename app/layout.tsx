@@ -39,11 +39,10 @@ export default function RootLayout({
         <SharedHeader />
         <SiteMotion />
         {children}
-        <script
-          async
-          src="https://swift-book.base44.app/loader.js"
-          data-swiftbook-site="pub_f1aebc883c3f43ccaca09c9a9121ee58"
-        ></script>
+        {/* SwiftBook chat widget is temporarily disabled:
+            1. loader.js appends an invisible fixed full-screen #swiftbook-backdrop (z-index 2147482999) without pointer-events: none, which blocks all clicks on the website.
+            2. https://swift-book.base44.app/embed/chat sends 'X-Frame-Options: DENY', which causes browsers to refuse loading the iframe (crashed icon).
+            Re-enable once SwiftBook fixes their loader.js CSS and allows iframe embedding. */}
       </body>
     </html>
   );
