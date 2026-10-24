@@ -39,6 +39,11 @@ export default function RootLayout({
         <SharedHeader />
         <SiteMotion />
         {children}
+        <script
+          async
+          src="https://swift-book.base44.app/loader.js"
+          data-swiftbook-site="pub_f1aebc883c3f43ccaca09c9a9121ee58"
+        ></script>
       </body>
     </html>
   );
