@@ -6,7 +6,7 @@ const DEFAULT_EVENT_URL = "https://swift-book.base44.app/functions/ingestSiteEve
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, email, type, date, location, notes } = body || {};
+    const { name, email, phone, type, date, location, notes } = body || {};
 
     if (!name || !email || !date || !location) {
       return NextResponse.json(
@@ -33,6 +33,7 @@ export async function POST(req: Request) {
         reference,
         client_name: String(name).trim(),
         client_email: String(email).trim().toLowerCase(),
+        client_phone: phone ? String(phone).trim() : undefined,
         date: String(date),
         session_type: String(type || "Wedding"),
         location: String(location).trim(),

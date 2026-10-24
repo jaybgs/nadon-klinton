@@ -19,6 +19,7 @@ export default function Booking() {
   const [data, setData] = useState({
     name: "",
     email: "",
+    phone: "",
     type: "Wedding",
     date: "",
     location: "",
@@ -218,6 +219,19 @@ export default function Booking() {
                       placeholder="you@example.com"
                     />
                   </label>
+                  <label>
+                    Phone number
+                    <input
+                      name="phone"
+                      required
+                      type="tel"
+                      autoComplete="tel"
+                      maxLength={50}
+                      value={data.phone}
+                      onChange={(e) => update("phone", e.target.value)}
+                      placeholder="Your phone number"
+                    />
+                  </label>
                 </>
               )}
 
@@ -240,6 +254,7 @@ export default function Booking() {
                     </span>
                     <span>
                       {data.name} · {data.email}
+                      {data.phone ? ` · ${data.phone}` : ""}
                     </span>
                     <span>Package and pricing: to be discussed</span>
                   </div>
@@ -253,7 +268,7 @@ export default function Booking() {
               {error && <p role="alert">{error}</p>}
               <div className={s.actions}>
                 {step > 0 ? (
-                  <button type="button" onClick={() => setStep(step - 1)}>
+                  <button className={s.backButton} type="button" onClick={() => setStep(step - 1)}>
                     ← Back
                   </button>
                 ) : (

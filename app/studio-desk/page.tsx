@@ -64,7 +64,7 @@ export default function Desk() {
   const visible = items.filter(
     (i) =>
       (filter === "All" || i.status === filter) &&
-      [i.name, i.email, i.type, i.location].join(" ").toLowerCase().includes(query.trim().toLowerCase())
+      [i.name, i.email, i.phone || "", i.type, i.location].join(" ").toLowerCase().includes(query.trim().toLowerCase())
   );
 
   return (
@@ -246,7 +246,10 @@ export default function Desk() {
                   />
                 </div>
                 <h2 className={s.clientName}>{item.name}</h2>
-                <p className={s.email}>{item.email}</p>
+                <p className={s.email}>
+                  {item.email}
+                  {item.phone ? ` · ${item.phone}` : ""}
+                </p>
                 <div className={s.details}>
                   <div>
                     <small>SESSION</small>

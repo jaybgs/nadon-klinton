@@ -1,7 +1,6 @@
-export type Inquiry = { id:string; name:string; email:string; type:string; date:string; location:string; notes:string; status:'New'|'Reviewed'; created:string; draft?:string; reviewedAt?:string };
+export type Inquiry = { id:string; name:string; email:string; phone?:string; type:string; date:string; location:string; notes:string; status:'New'|'Reviewed'; created:string; draft?:string; reviewedAt?:string };
 export const key = 'nadon-inquiries-demo-v1';
 export function readInquiries():Inquiry[] { const raw=localStorage.getItem(key); if(!raw)return []; const data=JSON.parse(raw); if(!Array.isArray(data))throw new Error('Invalid saved demo data'); return data; }
 export function saveInquiries(items:Inquiry[]) { localStorage.setItem(key,JSON.stringify(items)); }
-export function brief(item:Inquiry) {return `${item.type} inquiry for ${item.name}.\nRequested date: ${item.date}.\nLocation: ${item.location}.\nCreative direction: ${item.notes || 'To be discussed.'}\nTo confirm: coverage hours, event time zone, venue details, package and availability.\nPricing: pending photographer configuration.`;}
+export function brief(item:Inquiry) {return `${item.type} inquiry for ${item.name}.\nEmail: ${item.email}${item.phone ? `\nPhone: ${item.phone}` : ''}\nRequested date: ${item.date}.\nLocation: ${item.location}.\nCreative direction: ${item.notes || 'To be discussed.'}\nTo confirm: coverage hours, event time zone, venue details, package and availability.\nPricing: pending photographer configuration.`;}
 export function responseDraft(item:Inquiry) {return `Hi ${item.name},\n\nThank you for considering Nadon Klinton for your ${item.type.toLowerCase()} session on ${item.date} in ${item.location}. I would love to hear more about your plans.\n\nCould you share your preferred start time, coverage hours and venue details? I will review availability and the appropriate collection before confirming anything.\n\nWarmly,\nNadon`;}
-
