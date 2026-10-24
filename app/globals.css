@@ -132,3 +132,26 @@ img {
 .nadon-home-restored { background: #f2f0e9; padding-top: 28px; }
 
 
+
+/* SwiftBook widget fixes: Ensure iframe stays above scrim and never closes prematurely */
+#swiftbook-backdrop {
+  pointer-events: none !important;
+}
+#swiftbook-backdrop.sb-open {
+  pointer-events: auto !important;
+}
+#swiftbook-overlay {
+  pointer-events: none !important;
+}
+#swiftbook-overlay.sb-open {
+  pointer-events: auto !important;
+}
+#swiftbook-scrim {
+  display: none !important;
+  pointer-events: none !important;
+}
+#swiftbook-frame {
+  position: relative !important;
+  z-index: 2147483002 !important;
+  pointer-events: auto !important;
+}
