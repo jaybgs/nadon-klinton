@@ -46,36 +46,46 @@ export default function Booking() {
     }
 
     setSubmitting(true);
-
     try {
-      let reference = crypto.randomUUID();
-
-      try {
-        const res = await fetch("/api/inquiries", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
-        if (res.ok) {
-          const json = await res.json();
-          if (json.reference) {
-            reference = json.reference;
-          }
-        }
-      } catch (apiErr) {
-        console.warn("API submission warning, saving locally:", apiErr);
+      const res = await fetch("/api/inquire", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.error || "Failed to submit inquiry.");
       }
 
+      const reference = result.reference || `NK-${Math.floor(100000 + Math.random() * 900000)}`;
       const item: Inquiry = {
         ...data,
         id: reference,
         status: "New",
         created: new Date().toISOString()
       };
-      saveInquiries([item, ...readInquiries()]);
+      try {
+        saveInquiries([item, ...readInquiries()]);
+      } catch {
+        // non-blocking local storage cache
+      }
       setDone(reference);
-    } catch {
-      setError("Unable to submit inquiry at this time. Please try again.");
+    } catch (err: unknown) {
+      console.error("Booking error:", err);
+      // Fallback to local storage if offline or network failure
+      try {
+        const fallbackRef = `NK-${Math.floor(100000 + Math.random() * 900000)}`;
+        const fallbackItem: Inquiry = {
+          ...data,
+          id: fallbackRef,
+          status: "New",
+          created: new Date().toISOString()
+        };
+        saveInquiries([fallbackItem, ...readInquiries()]);
+        setDone(fallbackRef);
+      } catch {
+        setError("Unable to submit inquiry at this time. Please try again.");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -128,7 +138,7 @@ export default function Booking() {
                 Thank you for reaching out! Your inquiry has been received. I will review your
                 details and be in touch shortly with availability and pricing.
               </p>
-              <p className={s.reference}>Reference: {done.slice(0, 8)}</p>
+              <p className={s.reference}>Reference: {done}</p>
               <Link className={s.primary} href="/">
                 Return to home
               </Link>
@@ -250,7 +260,7 @@ export default function Booking() {
                   <span />
                 )}
                 <button className={s.primary} type="submit" disabled={!ready || submitting}>
-                  {submitting ? "Sending inquiry..." : step === 2 ? "Send inquiry" : "Continue"}
+                  {submitting ? "Sending..." : step === 2 ? "Send inquiry" : "Continue"}
                 </button>
               </div>
             </form>

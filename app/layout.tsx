@@ -6,6 +6,7 @@ import { SharedHeader } from "./shared-header";
 import { ImageCacheRegister } from "./image-cache-register";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://nadon-klinton.vercel.app"),
   title: "Nadon Klinton | Photographer & Filmmaker",
   description:
     "A cinematic photography landing page for portraits, weddings, brand campaigns, and editorial stories.",
