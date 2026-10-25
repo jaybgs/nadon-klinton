@@ -42,7 +42,7 @@ export default function RootLayout({
         <script
           async
           src="https://swift-book.base44.app/loader.js"
-          data-swiftbook-site="pub_f1aebc883c3f43ccaca09c9a9121ee58"
+          data-swiftbook-site="pub_33fccfbd114d4d0495612a3dc76e9ed4"
         ></script>
       </body>
     </html>
