@@ -133,13 +133,23 @@ img {
 
 
 
-/* SwiftBook widget fixes: Ensure iframe stays above scrim and never closes prematurely */
+/* ==========================================================================
+   SwiftBook 3D Luxury Widget Styling (Nadon Klinton Editorial Brand)
+   ========================================================================== */
+
+/* 1. Backdrop with depth & frosted-glass blur */
 #swiftbook-backdrop {
   pointer-events: none !important;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.3s ease !important;
 }
 #swiftbook-backdrop.sb-open {
   pointer-events: auto !important;
+  background: radial-gradient(circle at 88% 88%, rgba(32, 44, 30, 0.38) 0%, rgba(14, 18, 12, 0.48) 100%) !important;
+  backdrop-filter: blur(8px) saturate(130%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(130%) !important;
 }
+
+/* 2. Overlay container */
 #swiftbook-overlay {
   pointer-events: none !important;
 }
@@ -150,8 +160,111 @@ img {
   display: none !important;
   pointer-events: none !important;
 }
+
+/* 3. 3D Tactile Floating Orb Launcher */
+#swiftbook-bubble {
+  width: 64px !important;
+  height: 64px !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 35% 25%, #465940 0%, #2e3c2b 50%, #1c251a 90%, #141b12 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 14px 28px -3px rgba(24, 34, 22, 0.45),
+    0 28px 48px -6px rgba(0, 0, 0, 0.32),
+    inset 0 2px 2px rgba(255, 255, 255, 0.45),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+  transform: perspective(600px) translateZ(0) !important;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease !important;
+}
+
+#swiftbook-bubble:hover {
+  transform: perspective(600px) translateY(-5px) scale(1.05) translateZ(12px) !important;
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    0 22px 42px -2px rgba(32, 46, 30, 0.55),
+    0 36px 60px -4px rgba(0, 0, 0, 0.38),
+    inset 0 2.5px 3px rgba(255, 255, 255, 0.65),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
+}
+
+#swiftbook-bubble:active {
+  transform: perspective(600px) translateY(2px) scale(0.96) translateZ(0) !important;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.22),
+    0 8px 18px rgba(24, 34, 22, 0.35),
+    inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+#swiftbook-bubble svg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+  stroke: #f7f6ed !important;
+  stroke-width: 2.2 !important;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#swiftbook-bubble:hover svg {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+/* 4. Glowing 3D Emerald Gem Status Dot */
+#swiftbook-dot {
+  width: 14px !important;
+  height: 14px !important;
+  top: 0px !important;
+  right: 0px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 30% 30%, #6ee7b7 0%, #10b981 55%, #047857 100%) !important;
+  border: 2px solid #ffffff !important;
+  box-shadow:
+    0 0 12px rgba(16, 185, 129, 0.85),
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 5. 3D Floating Window Frame */
+@keyframes sb3dPopIn {
+  0% {
+    opacity: 0;
+    transform: perspective(1200px) translateY(30px) rotateX(4deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1200px) translateY(0) rotateX(0deg) scale(1);
+  }
+}
+
 #swiftbook-frame {
   position: relative !important;
   z-index: 2147483002 !important;
   pointer-events: auto !important;
+  border-radius: 26px !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  outline: 1px solid rgba(48, 58, 46, 0.1) !important;
+  outline-offset: -1px;
+  background: #ffffff !important;
+  box-shadow:
+    0 4px 8px -2px rgba(0, 0, 0, 0.05),
+    0 16px 32px -4px rgba(22, 32, 20, 0.18),
+    0 32px 72px -8px rgba(10, 16, 9, 0.28),
+    0 54px 110px -16px rgba(0, 0, 0, 0.24),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+  margin: 0 20px 20px 0 !important;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+#swiftbook-overlay.sb-open #swiftbook-frame {
+  animation: sb3dPopIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@media (max-width: 520px) {
+  #swiftbook-frame {
+    margin: 0 !important;
+    border-radius: 26px 26px 0 0 !important;
+    max-height: 88vh !important;
+  }
 }
